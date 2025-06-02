@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pomodoro Timer</title>
+
+  <!-- Google Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+
+  <!-- Styling -->
+  <style>
+    :root {
+      --primary: #eab29c;
+      --secondary: #96b4af;
+      --accent: #f0f0be;
+      --text: #333;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background-color: var(--accent);
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    .clock-container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 8px 8px 0px sienna;
+      width: 350px;
+      text-align: center;
+    }
+
+    #time-left {
+      font-size: 4rem;
+      background-color: var(--secondary);
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: inset 2px 2px 6px rgba(0,0,0,0.2);
+      color: white;
+    }
+
+    #timer-label {
+      font-size: 1.5rem;
+      background-color: var(--secondary);
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .length-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .length-box {
+      border: 2px solid var(--primary);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      width: 45%;
+    }
+
+    .length-box h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1rem;
+    }
+
+    input[type="number"] {
+      font-family: inherit;
+      font-size: 1.5rem;
+      width: 60px;
+      text-align: center;
+      border: 1px solid var(--primary);
+      border-radius: 0.5rem;
+      padding: 0.3rem;
+    }
+
+    #timer-ssr {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    button {
+      background-color: var(--primary);
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      box-shadow: 2px 2px #c25b2c;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #333;
+    }
+
+    button:focus {
+      outline: none;
+      transform: translate(2px, 2px);
+      box-shadow: inset 2px 2px #c25b2c;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React, ReactDOM, Babel -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <!-- App -->
+  <script type="text/babel">
+    const SESSION = "Session";
+    const BREAK = "Break";
+
+    function App() {
+      const [breakLen, setBreakLen] = React.useState(5);
+      const [sessionLen, setSessionLen] = React.useState(25);
+      const [timeLeft, setTimeLeft] = React.useState(1500);
+      const [timerType, setTimerType] = React.useState(SESSION);
+      const [isRunning, setIsRunning] = React.useState(false);
+      const timerRef = React.useRef(null);
+      const beep = React.useRef(null);
+
+      const formatTime = (secs) => {
+        const m = String(Math.floor(secs / 60)).padStart(2, '0');
+        const s = String(secs % 60).padStart(2, '0');
+        return `${m}:${s}`;
+      };
+
+      const handleInput = (type, value) => {
+        if (isRunning) return;
+        const val = parseInt(value);
+        if (val < 1 || val > 60 || isNaN(val)) return;
+        if (type === SESSION) {
+          setSessionLen(val);
+          if (timerType === SESSION) setTimeLeft(val * 60);
+        } else {
+          setBreakLen(val);
+          if (timerType === BREAK) setTimeLeft(val * 60);
+        }
+      };
+
+      const toggleTimer = () => {
+        if (isRunning) {
+          clearInterval(timerRef.current);
+          setIsRunning(false);
+        } else {
+          timerRef.current = setInterval(() => {
+            setTimeLeft(prev => {
+              if (prev <= 0) {
+                beep.current.play();
+                if (timerType === SESSION) {
+                  setTimerType(BREAK);
+                  return breakLen * 60;
+                } else {
+                  setTimerType(SESSION);
+                  return sessionLen * 60;
+                }
+              }
+              return prev - 1;
+            });
+          }, 1000);
+          setIsRunning(true);
+        }
+      };
+
+      const resetTimer = () => {
+        clearInterval(timerRef.current);
+        setBreakLen(5);
+        setSessionLen(25);
+        setTimeLeft(1500);
+        setTimerType(SESSION);
+        setIsRunning(false);
+        beep.current.pause();
+        beep.current.currentTime = 0;
+      };
+
+      return (
+        <div className="clock-container">
+          <div id="timer-label">{timerType}</div>
+          <div id="time-left">{formatTime(timeLeft)}</div>
+
+          <div id="timer-ssr">
+            <button onClick={toggleTimer} id="start-stop">
+              <i className={`fa ${isRunning ? 'fa-pause' : 'fa-play'}`}></i>
+            </button>
+            <button onClick={resetTimer} id="reset">
+              <i className="fa fa-refresh"></i>
+            </button>
+          </div>
+
+          <div className="length-container">
+            <div className="length-box">
+              <h3>Break (min)</h3>
+              <input
+                type="number"
+                min="1"
+                max="60"
+                value={breakLen}
+                onChange={(e) => handleInput(BREAK, e.target.value)}
+                disabled={isRunning}
+              />
+            </div>
+
+            <div className="length-box">
+              <h3>Session (min)</h3>
+              <input
+                type="number"
+                min="1"
+                max="60"
+                value={sessionLen}
+                onChange={(e) => handleInput(SESSION, e.target.value)}
+                disabled={isRunning}
+              />
+            </div>
+          </div>
+
+          <audio
+            id="beep"
+            ref={beep}
+            src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+          />
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>
