@@ -5,21 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Greetings</title>
   <style>
-    :root {
-      --text-light: #000000;
-      --text-dark: #f0f0f0;
-      --border-light: #000000;
-      --border-dark: #ffffff;
-      --shadow-light: rgba(0, 0, 0, 0.2);
-      --shadow-dark: rgba(255, 255, 255, 0.1);
-    }
-
+    /* Default (Light Mode) */
     body {
       font-variant-caps: all-petite-caps;
       margin: 0;
       padding: 0;
-      background: transparent;
-      color: var(--text-light);
+      background-color: white;
+      color: black;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -33,10 +25,11 @@
       align-items: center;
       flex-direction: column;
       max-width: 90%;
-      border: 3px solid var(--border-light);
+      border: 3px solid black;
       border-radius: 10px;
-      box-shadow: 2px 2px 8px var(--shadow-light);
-      background: transparent;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      color: black;
       transition: all 0.3s ease;
     }
 
@@ -63,15 +56,18 @@
       padding: 0 4px;
     }
 
+    /* 🌙 Explicit Dark Mode */
     @media (prefers-color-scheme: dark) {
       body {
-        color: var(--text-dark);
+        background-color: #1a1a1a;
+        color: white;
       }
 
       .widget {
-        border-color: var(--border-dark);
-        color: var(--text-dark);
-        box-shadow: 2px 2px 8px var(--shadow-dark);
+        background-color: #1a1a1a;
+        border-color: white;
+        color: white;
+        box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.1);
       }
     }
   </style>
