@@ -5,21 +5,23 @@
   <title>Greetings Widget</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background-color: rgb(25, 25, 25);
+      color: white;
+      padding: 0;
       margin: 0;
-      padding: 20px;
-      background-color: white;
-      color: black;
     }
 
     .greeting-card {
       max-width: 300px;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 10px;
+      background-color: rgb(25, 25, 25);
+      color: white;
+      border-radius: 0;
+      box-shadow: none;
     }
 
     .greeting-card h1 {
@@ -31,26 +33,6 @@
     .greeting-card p {
       margin: 4px 0;
       font-size: 14px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #000;
-        color: #fff;
-      }
-
-      .greeting-card {
-        background-color: #111;
-        color: white;
-        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-      }
-    }
-
-    @media (prefers-color-scheme: light) {
-      .greeting-card {
-        background-color: #fff;
-        color: black;
-      }
     }
   </style>
 </head>
