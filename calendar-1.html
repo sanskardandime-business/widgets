@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mini Calendar Widget</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+
+    :root {
+      --bg-light: #ffffff;
+      --bg-dark: #1e1e1e;
+      --text-light: #1a1a1a;
+      --text-dark: #f5f5f5;
+      --accent: #ff6b6b;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-dark);
+      }
+    }
+
+    .calendar {
+      max-width: 220px;
+      font-size: 12px;
+      padding: 8px;
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .calendar {
+        background-color: #2c2c2c;
+      }
+    }
+
+    .calendar h2 {
+      text-align: center;
+      font-size: 14px;
+      margin: 4px 0;
+    }
+
+    .calendar .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .calendar button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: inherit;
+    }
+
+    .calendar .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      text-align: center;
+    }
+
+    .calendar .days div {
+      padding: 4px 0;
+      border-radius: 4px;
+    }
+
+    .calendar .weekdays {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .calendar .days .today {
+      background-color: var(--accent);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="calendar">
+    <div class="nav">
+      <button id="prev">&lt;</button>
+      <h2 id="monthYear"></h2>
+      <button id="next">&gt;</button>
+    </div>
+    <div class="days weekdays">
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
+    <div class="days" id="calendarDays"></div>
+  </div>
+
+  <script>
+    const calendarDays = document.getElementById('calendarDays');
+    const monthYear = document.getElementById('monthYear');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    let current = new Date();
+
+    function renderCalendar(date) {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+
+      monthYear.textContent = date.toLocaleString('default', {
+        month: 'short',
+        year: 'numeric'
+      });
+
+      calendarDays.innerHTML = '';
+
+      for (let i = 0; i < firstDay; i++) {
+        calendarDays.innerHTML += `<div></div>`;
+      }
+
+      for (let day = 1; day <= lastDate; day++) {
+        const isToday =
+          day === new Date().getDate() &&
+          month === new Date().getMonth() &&
+          year === new Date().getFullYear();
+
+        calendarDays.innerHTML += `<div class="${isToday ? 'today' : ''}">${day}</div>`;
+      }
+    }
+
+    prevBtn.onclick = () => {
+      current.setMonth(current.getMonth() - 1);
+      renderCalendar(current);
+    };
+
+    nextBtn.onclick = () => {
+      current.setMonth(current.getMonth() + 1);
+      renderCalendar(current);
+    };
+
+    renderCalendar(current);
+  </script>
+</body>
+</html>
