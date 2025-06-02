@@ -19,17 +19,47 @@
     }
 
     .quote-widget {
-      max-width: 400px;
+      max-width: 100vw;
       padding: 5px;
       border: 2px solid black;
       border-radius: 10px;
       text-align: center;
-      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
     }
 
     .quote-text {
-      font-size: 0.95em;
+      font-size: 1.2em;
       line-height: 1.2;
+    }
+    
+    /* Light Theme */
+    @media (prefers-color-scheme: light) {
+      body {
+        background-color: white;
+        color: rgb(25, 25, 25);
+      }
+
+      .quote-widget {
+        background-color: white;
+        color: rgb(25, 25, 25);
+        border: 2px solid black;
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    /* Dark Theme */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: rgb(25, 25, 25);
+        color: white;
+      }
+
+      .quote-widget {
+        background-color: rgb(25, 25, 25);
+        color: white;
+        border: 2px solid white;
+        box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.3);
+      }
     }
   </style>
 </head>
