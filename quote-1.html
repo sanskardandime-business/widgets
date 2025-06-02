@@ -1,68 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Daily Quote Widget</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Quote Widget</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Merriweather&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #fdfdfd;
-      --text: #1a1a1a;
-      --accent: #4f46e5;
-      --card-bg: #ffffff;
-      --shadow: rgba(0, 0, 0, 0.07);
-    }
-
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg);
+      font-family: 'Poppins', sans-serif;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
-    }
-
-    .widget {
-      background-color: var(--card-bg);
-      width: 90%;
-      max-width: 400px;
-      border-radius: 16px;
-      padding: 24px 28px;
-      box-shadow: 0 8px 20px var(--shadow);
-      text-align: center;
-    }
-
-    .title {
-      font-size: 14px;
-      color: var(--accent);
-      letter-spacing: 1.2px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      text-transform: uppercase;
-    }
-
-    .quote {
-      font-size: 20px;
-      font-style: italic;
+      background-color: var(--bg);
       color: var(--text);
-      margin-bottom: 12px;
-      line-height: 1.4;
+      transition: background-color 0.3s, color 0.3s;
+      padding: 20px;
+      box-sizing: border-box;
+      user-select: none;
     }
-
-    .author {
-      font-size: 16px;
-      color: #555;
-      font-weight: 500;
+    :root {
+      --bg-light: #fff;
+      --text-light: #222;
+      --bg-dark: #1e1e1e;
+      --text-dark: #f0f0f0;
+    }
+    body.light {
+      --bg: var(--bg-light);
+      --text: var(--text-light);
+    }
+    body.dark {
+      --bg: var(--bg-dark);
+      --text: var(--text-dark);
+    }
+    blockquote {
+      max-width: 400px;
+      font-family: 'Merriweather', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      padding-left: 1.2em;
+      position: relative;
+      margin: 0;
+      line-height: 1.5;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      padding: 20px 30px 30px 30px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    blockquote:before {
+      content: "“";
+      font-size: 3rem;
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      color: #888;
+    }
+    footer {
+      text-align: right;
+      font-weight: 700;
+      margin-top: 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+    @media (max-width: 400px) {
+      blockquote {
+        max-width: 90vw;
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="widget">
-    <div class="title">Quote of the Day</div>
-    <div class="quote">“Success is the sum of small efforts, repeated day in and day out.”</div>
-    <div class="author">– Robert Collier</div>
-  </div>
+  <blockquote id="quote">
+    Loading quote...
+  </blockquote>
+
+  <script>
+    const quotes = [
+      { text: "Success doesn’t come from what you do occasionally, it comes from what you do consistently.", author: "Marie Forleo" },
+      { text: "Study while others are sleeping. Work while others are loafing. Prepare while others are playing.", author: "William Arthur Ward" },
+      { text: "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.", author: "Colin Powell" },
+      { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
+      { text: "The expert in anything was once a beginner.", author: "Helen Hayes" },
+      { text: "Don’t wish it were easier. Wish you were better.", author: "Jim Rohn" },
+      { text: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe" },
+      { text: "If you can’t fly, then run. If you can’t run, then walk. But whatever you do, keep moving forward.", author: "Martin Luther King Jr." },
+      { text: "Motivation is what gets you started. Habit is what keeps you going.", author: "Jim Ryun" },
+      { text: "Procrastination is the thief of time.", author: "Edward Young" },
+      { text: "Doubt kills more dreams than failure ever will.", author: "Suzy Kassem" },
+      { text: "Discipline is choosing between what you want now and what you want most.", author: "Abraham Lincoln" },
+      { text: "Small steps every day lead to big results.", author: "Unknown" },
+      { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
+      { text: "You don’t have to be perfect to be amazing.", author: "Unknown" },
+      { text: "Wake up with determination. Go to bed with satisfaction.", author: "Unknown" },
+      { text: "One day or day one. You decide.", author: "Unknown" },
+      { text: "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", author: "Dr. Seuss" },
+      { text: "Don’t let what you cannot do interfere with what you can do.", author: "John Wooden" },
+      { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier" },
+      { text: "The future depends on what you do today.", author: "Mahatma Gandhi" },
+      { text: "Failing to prepare is preparing to fail.", author: "Benjamin Franklin" },
+      { text: "A little progress each day adds up to big results.", author: "Unknown" },
+      { text: "Dreams don’t work unless you do.", author: "John C. Maxwell" },
+      { text: "Never let the fear of striking out keep you from playing the game.", author: "Babe Ruth" },
+      { text: "Your education is a dress rehearsal for a life that is yours to lead.", author: "Nora Ephron" },
+      { text: "Success doesn’t happen overnight. Keep going.", author: "Unknown" },
+      { text: "The best preparation for tomorrow is doing your best today.", author: "H. Jackson Brown Jr." },
+      { text: "Work hard in silence. Let your success make the noise.", author: "Frank Ocean" },
+      { text: "Winners are not people who never fail, but people who never quit.", author: "Unknown" },
+      { text: "Your time is limited, so don’t waste it living someone else’s life.", author: "Steve Jobs" },
+      { text: "It always seems impossible until it’s done.", author: "Nelson Mandela" },
+      { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+      { text: "Success isn’t about being the best. It’s about always getting better.", author: "Behance" },
+      { text: "Don’t watch the clock. Do what it does. Keep going.", author: "Sam Levenson" },
+      { text: "Your only limit is your mind.", author: "Unknown" },
+      { text: "You don’t need to be great to start, but you have to start to be great.", author: "Zig Ziglar" },
+      { text: "Learning is not attained by chance, it must be sought for with ardor and diligence.", author: "Abigail Adams" },
+      { text: "It’s not about being the best. It’s about being better than you were yesterday.", author: "Unknown" },
+      { text: "When you feel like quitting, think about why you started.", author: "Unknown" },
+      { text: "You are capable of amazing things.", author: "Unknown" },
+      { text: "Action is the foundational key to all success.", author: "Pablo Picasso" },
+      { text: "A winner is a dreamer who never gives up.", author: "Nelson Mandela" },
+      { text: "Hard work beats talent when talent doesn’t work hard.", author: "Tim Notke" },
+      { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+      { text: "Knowledge is power. Information is liberating. Education is the premise of progress.", author: "Kofi Annan" },
+      { text: "Even if you’re on the right track, you’ll get run over if you just sit there.", author: "Will Rogers" },
+      { text: "You don’t need to see the whole staircase, just take the first step.", author: "Martin Luther King Jr." },
+      { text: "The earlier you start working on something, the earlier you will see results.", author: "Unknown" }
+    ];
+
+    function applyTheme() {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+        document.body.classList.remove('light');
+      } else {
+        document.body.classList.add('light');
+        document.body.classList.remove('dark');
+      }
+    }
+
+    function showRandomQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const q = quotes[randomIndex];
+      document.getElementById('quote').innerHTML = `“${q.text}”<footer>— ${q.author}</footer>`;
+    }
+
+    applyTheme();
+    showRandomQuote();
+
+    // Update theme if user changes system preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+  </script>
 </body>
 </html>
