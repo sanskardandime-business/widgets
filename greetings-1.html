@@ -2,137 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greeting Widget</title>
-
-  <!-- Google Font: Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+  <title>Greetings Widget</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    html, body {
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Poppins', sans-serif;
-      transition: background 0.5s, color 0.5s;
+      padding: 20px;
+      background-color: white;
+      color: black;
     }
 
-    .widget {
-      padding: 12px 16px;
-      border-radius: 10px;
-      text-align: center;
-      border: 2px solid;
-      max-width: 95%;
-      margin: auto;
-      transition: background 0.5s, color 0.5s;
+    .greeting-card {
+      max-width: 300px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
-    .greet {
-      font-size: 1.4em;
+    .greeting-card h1 {
+      margin: 0 0 10px;
+      font-size: 20px;
       font-weight: 600;
-      margin-bottom: 0.4em;
     }
 
-    .date {
-      font-size: 0.95em;
-      margin-bottom: 0.4em;
+    .greeting-card p {
+      margin: 4px 0;
+      font-size: 14px;
     }
 
-    .clock {
-      font-family: monospace;
-      font-size: 1.1em;
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #000;
+        color: #fff;
+      }
+
+      .greeting-card {
+        background-color: #111;
+        color: white;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      }
     }
 
-    .clock .time {
-      display: inline-block;
-      min-width: 24px;
-    }
-
-    .colon {
-      padding: 0 3px;
+    @media (prefers-color-scheme: light) {
+      .greeting-card {
+        background-color: #fff;
+        color: black;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="widget" id="widget">
-    <div class="greet" id="greet"></div>
-    <div class="date" id="date"></div>
-    <div class="clock">
-      <span class="time" id="hour"></span><span class="colon">:</span>
-      <span class="time" id="min"></span><span class="colon">:</span>
-      <span class="time" id="sec"></span>
-    </div>
+  <div class="greeting-card">
+    <h1 id="greeting">Hello!</h1>
+    <p id="date">Today is ...</p>
+    <p id="time">Time is ...</p>
   </div>
 
   <script>
-    function detectTheme() {
-      const bg = window.getComputedStyle(document.body).backgroundColor;
-      const isDark = bg === 'rgb(25, 25, 25)' || bg === 'rgb(24, 24, 27)' || bg === 'rgb(0, 0, 0)';
-      return isDark ? 'dark' : 'light';
-    }
+    function updateGreeting() {
+      const greetingEl = document.getElementById('greeting');
+      const dateEl = document.getElementById('date');
+      const timeEl = document.getElementById('time');
 
-    function applyTheme(theme) {
-      const widget = document.getElementById("widget");
-      if (theme === "dark") {
-        document.body.style.backgroundColor = "#1a1a1a";
-        widget.style.backgroundColor = "#1a1a1a";
-        widget.style.color = "white";
-        widget.style.borderColor = "white";
-      } else {
-        document.body.style.backgroundColor = "white";
-        widget.style.backgroundColor = "white";
-        widget.style.color = "black";
-        widget.style.borderColor = "black";
-      }
-    }
-
-    function updateClock() {
       const now = new Date();
-      const h = pad(twelveHour(now.getHours()));
-      const m = pad(now.getMinutes());
-      const s = pad(now.getSeconds()) + (now.getHours() >= 12 ? " pm" : " am");
-      document.getElementById("hour").textContent = h;
-      document.getElementById("min").textContent = m;
-      document.getElementById("sec").textContent = s;
+      const hour = now.getHours();
+
+      let greeting = 'Hello';
+      if (hour < 12) greeting = 'Good Morning';
+      else if (hour < 18) greeting = 'Good Afternoon';
+      else greeting = 'Good Evening';
+
+      const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+
+      greetingEl.textContent = greeting;
+      dateEl.textContent = `Today is ${now.toLocaleDateString(undefined, dateOptions)}`;
+      timeEl.textContent = `Time is ${now.toLocaleTimeString(undefined, timeOptions)}`;
     }
 
-    function updateDate() {
-      const now = new Date();
-      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      document.getElementById("date").textContent =
-        `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
-    }
-
-    function updateGreet() {
-      const now = new Date();
-      const hrs = now.getHours();
-      let greet = "";
-      if (hrs < 12) greet = "Good Morning";
-      else if (hrs < 17) greet = "Good Afternoon";
-      else greet = "Good Evening";
-      document.getElementById("greet").textContent = greet;
-    }
-
-    function pad(n) {
-      return n < 10 ? "0" + n : n;
-    }
-
-    function twelveHour(h) {
-      return h % 12 === 0 ? 12 : h % 12;
-    }
-
-    function start() {
-      const theme = detectTheme();
-      applyTheme(theme);
-      updateGreet();
-      updateDate();
-      updateClock();
-      setInterval(updateClock, 1000);
-    }
-
-    start();
+    updateGreeting();
+    setInterval(updateGreeting, 1000);
   </script>
 </body>
 </html>
