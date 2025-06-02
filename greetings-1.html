@@ -5,37 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Greeting Widget</title>
 
+  <!-- ✅ Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      font-family: sans-serif;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.5s, color 0.5s;
     }
 
     .widget {
-      padding: 16px;
-      border-radius: 10px;
+      padding: 20px 16px;
+      border-radius: 12px;
       text-align: center;
       border: 2px solid;
       max-width: 95%;
       margin: auto;
+      transition: background 0.5s, color 0.5s;
     }
 
     .greet {
-      font-size: 2em;
-      font-weight: bold;
+      font-size: 2.2em;
+      font-weight: 600;
+      margin-bottom: 0.5em;
     }
 
-    .date, .clock {
+    .date {
+      font-size: 1.1em;
+      margin-bottom: 0.5em;
+    }
+
+    .clock {
       font-family: monospace;
-      font-size: 1.2em;
-      margin: 6px 0;
+      font-size: 1.4em;
     }
 
     .clock .time {
       display: inline-block;
-      min-width: 24px;
+      min-width: 28px;
     }
 
     .colon {
