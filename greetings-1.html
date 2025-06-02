@@ -9,17 +9,13 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: rgb(25, 25, 25);
-      color: white;
-      padding: 0;
       margin: 0;
+      padding: 0;
     }
 
     .greeting-card {
       max-width: 300px;
-      padding: 10px;
-      background-color: rgb(25, 25, 25);
-      color: white;
+      padding: 5px;
       border-radius: 0;
       box-shadow: none;
     }
@@ -33,6 +29,32 @@
     .greeting-card p {
       margin: 4px 0;
       font-size: 14px;
+    }
+
+    /* Light Theme */
+    @media (prefers-color-scheme: light) {
+      body {
+        background-color: white;
+        color: rgb(25, 25, 25);
+      }
+
+      .greeting-card {
+        background-color: white;
+        color: rgb(25, 25, 25);
+      }
+    }
+
+    /* Dark Theme */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: rgb(25, 25, 25);
+        color: white;
+      }
+
+      .greeting-card {
+        background-color: rgb(25, 25, 25);
+        color: white;
+      }
     }
   </style>
 </head>
