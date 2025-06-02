@@ -10,18 +10,16 @@
       --text-dark: #f0f0f0;
       --border-light: #000000;
       --border-dark: #ffffff;
-      --bg-light: #ffffff;
-      --bg-dark: #1a1a1a;
       --shadow-light: rgba(0, 0, 0, 0.2);
       --shadow-dark: rgba(255, 255, 255, 0.1);
     }
 
     body {
       font-variant-caps: all-petite-caps;
-      background-color: var(--bg-light);
-      color: var(--text-light);
       margin: 0;
       padding: 0;
+      background: transparent;
+      color: var(--text-light);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -38,7 +36,7 @@
       border: 3px solid var(--border-light);
       border-radius: 10px;
       box-shadow: 2px 2px 8px var(--shadow-light);
-      background-color: var(--bg-light);
+      background: transparent;
       transition: all 0.3s ease;
     }
 
@@ -65,16 +63,13 @@
       padding: 0 4px;
     }
 
-    /* 🌙 Dark Mode Support */
     @media (prefers-color-scheme: dark) {
       body {
-        background-color: var(--bg-dark);
         color: var(--text-dark);
       }
 
       .widget {
         border-color: var(--border-dark);
-        background-color: var(--bg-dark);
         color: var(--text-dark);
         box-shadow: 2px 2px 8px var(--shadow-dark);
       }
@@ -107,10 +102,10 @@
 
     function dispalyDate(today) {
       const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const monthNames = ["January", "February", "March", "April", "May", "June",
+      const months = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"];
       const dayName = days[today.getDay()];
-      const monthName = monthNames[today.getMonth()];
+      const monthName = months[today.getMonth()];
       const date = today.getDate();
       const year = today.getFullYear();
       document.getElementById('date').innerHTML = `${dayName}, ${monthName} ${date} ${year}`;
