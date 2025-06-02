@@ -6,30 +6,38 @@
   <title>Student Quote Widget</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Merriweather&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      color-scheme: light dark;
+    }
+
     body {
       margin: 0;
+      padding: 20px;
       font-family: 'Poppins', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      padding: 20px;
-      box-sizing: border-box;
-      user-select: none;
-      transition: background-color 0.5s, color 0.5s;
+      background-color: white;
+      transition: background-color 0.4s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1e1e1e;
+      }
     }
 
     blockquote {
-      max-width: 500px;
       font-family: 'Merriweather', serif;
       font-style: italic;
       font-size: 1.3rem;
-      padding: 20px 30px;
-      position: relative;
-      line-height: 1.5;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      border-radius: 18px;
-      transition: background-color 0.5s, color 0.5s;
+      padding: 25px 35px;
+      max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      transition: color 0.5s ease;
+      background: transparent;
     }
 
     blockquote:before {
@@ -42,9 +50,9 @@
     }
 
     footer {
+      margin-top: 15px;
       text-align: right;
-      font-weight: 700;
-      margin-top: 20px;
+      font-weight: 600;
       font-family: 'Poppins', sans-serif;
     }
 
@@ -112,32 +120,15 @@
       { text: "The earlier you start working on something, the earlier you will see results.", author: "Unknown" }
     ];
 
-    const colorThemes = [
-      { background: "#fefae0", text: "#283618" },
-      { background: "#f0f4f8", text: "#1f2937" },
-      { background: "#fff1e6", text: "#3e2723" },
-      { background: "#e0f7fa", text: "#004d40" },
-      { background: "#f3f4ed", text: "#222" },
-      { background: "#1e1e1e", text: "#f0f0f0" }, // for dark mode lovers
-      { background: "#eceff1", text: "#37474f" },
-      { background: "#f9fbe7", text: "#33691e" },
-      { background: "#fff", text: "#333" }
+    const textColors = [
+      "#1a1a1a", "#2e7d32", "#3f51b5", "#d32f2f", "#6a1b9a", "#e65100",
+      "#006064", "#4e342e", "#0277bd", "#5d4037", "#00897b", "#37474f",
+      "#1e88e5", "#ad1457", "#fbc02d"
     ];
 
-    function applyRandomTheme() {
-      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const themes = colorThemes.filter(theme => {
-        const bg = theme.background;
-        const text = theme.text;
-        return isDarkMode
-          ? bg.toLowerCase() !== "#fff" && !bg.includes("fef")
-          : true;
-      });
-      const random = themes[Math.floor(Math.random() * themes.length)];
-      document.body.style.backgroundColor = random.background;
-      document.body.style.color = random.text;
-      document.getElementById("quote").style.backgroundColor = random.background;
-      document.getElementById("quote").style.color = random.text;
+    function applyRandomTextColor() {
+      const color = textColors[Math.floor(Math.random() * textColors.length)];
+      document.getElementById("quote").style.color = color;
     }
 
     function showRandomQuote() {
@@ -146,11 +137,8 @@
       document.getElementById('quote').innerHTML = `“${q.text}”<footer>— ${q.author}</footer>`;
     }
 
-    applyRandomTheme();
+    applyRandomTextColor();
     showRandomQuote();
-
-    // Respond to system theme change
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyRandomTheme);
   </script>
 </body>
 </html>
