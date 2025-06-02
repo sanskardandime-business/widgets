@@ -13,57 +13,42 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: var(--bg);
-      color: var(--text);
-      transition: background-color 0.3s, color 0.3s;
       padding: 20px;
       box-sizing: border-box;
       user-select: none;
+      transition: background-color 0.5s, color 0.5s;
     }
-    :root {
-      --bg-light: #fff;
-      --text-light: #222;
-      --bg-dark: #1e1e1e;
-      --text-dark: #f0f0f0;
-    }
-    body.light {
-      --bg: var(--bg-light);
-      --text: var(--text-light);
-    }
-    body.dark {
-      --bg: var(--bg-dark);
-      --text: var(--text-dark);
-    }
+
     blockquote {
-      max-width: 400px;
+      max-width: 500px;
       font-family: 'Merriweather', serif;
       font-style: italic;
       font-size: 1.3rem;
-      padding-left: 1.2em;
+      padding: 20px 30px;
       position: relative;
-      margin: 0;
       line-height: 1.5;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      border-radius: 15px;
-      padding: 20px 30px 30px 30px;
-      background: var(--bg);
-      color: var(--text);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      border-radius: 18px;
+      transition: background-color 0.5s, color 0.5s;
     }
+
     blockquote:before {
       content: "“";
       font-size: 3rem;
       position: absolute;
       left: 15px;
-      top: 10px;
-      color: #888;
+      top: 5px;
+      color: rgba(0, 0, 0, 0.2);
     }
+
     footer {
       text-align: right;
       font-weight: 700;
       margin-top: 20px;
       font-family: 'Poppins', sans-serif;
     }
-    @media (max-width: 400px) {
+
+    @media (max-width: 500px) {
       blockquote {
         max-width: 90vw;
         font-size: 1.1rem;
@@ -72,9 +57,7 @@
   </style>
 </head>
 <body>
-  <blockquote id="quote">
-    Loading quote...
-  </blockquote>
+  <blockquote id="quote">Loading quote...</blockquote>
 
   <script>
     const quotes = [
@@ -129,14 +112,32 @@
       { text: "The earlier you start working on something, the earlier you will see results.", author: "Unknown" }
     ];
 
-    function applyTheme() {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-        document.body.classList.remove('light');
-      } else {
-        document.body.classList.add('light');
-        document.body.classList.remove('dark');
-      }
+    const colorThemes = [
+      { background: "#fefae0", text: "#283618" },
+      { background: "#f0f4f8", text: "#1f2937" },
+      { background: "#fff1e6", text: "#3e2723" },
+      { background: "#e0f7fa", text: "#004d40" },
+      { background: "#f3f4ed", text: "#222" },
+      { background: "#1e1e1e", text: "#f0f0f0" }, // for dark mode lovers
+      { background: "#eceff1", text: "#37474f" },
+      { background: "#f9fbe7", text: "#33691e" },
+      { background: "#fff", text: "#333" }
+    ];
+
+    function applyRandomTheme() {
+      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const themes = colorThemes.filter(theme => {
+        const bg = theme.background;
+        const text = theme.text;
+        return isDarkMode
+          ? bg.toLowerCase() !== "#fff" && !bg.includes("fef")
+          : true;
+      });
+      const random = themes[Math.floor(Math.random() * themes.length)];
+      document.body.style.backgroundColor = random.background;
+      document.body.style.color = random.text;
+      document.getElementById("quote").style.backgroundColor = random.background;
+      document.getElementById("quote").style.color = random.text;
     }
 
     function showRandomQuote() {
@@ -145,11 +146,11 @@
       document.getElementById('quote').innerHTML = `“${q.text}”<footer>— ${q.author}</footer>`;
     }
 
-    applyTheme();
+    applyRandomTheme();
     showRandomQuote();
 
-    // Update theme if user changes system preference
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+    // Respond to system theme change
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyRandomTheme);
   </script>
 </body>
 </html>
