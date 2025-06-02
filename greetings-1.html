@@ -3,138 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greetings</title>
+  <title>Greeting Widget</title>
+
   <style>
-    /* Default (Light Mode) */
-    body {
-      font-variant-caps: all-petite-caps;
+    html, body {
       margin: 0;
       padding: 0;
-      background-color: white;
-      color: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      height: 100%;
+      font-family: sans-serif;
     }
 
     .widget {
-      padding: 10px 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      max-width: 90%;
-      border: 3px solid black;
+      padding: 16px;
       border-radius: 10px;
-      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-      background-color: white;
-      color: black;
-      transition: all 0.3s ease;
+      text-align: center;
+      border: 2px solid;
+      max-width: 95%;
+      margin: auto;
     }
 
     .greet {
-      font-size: 2.5em;
+      font-size: 2em;
       font-weight: bold;
-      margin-bottom: 8px;
     }
 
     .date, .clock {
       font-family: monospace;
-      font-size: 1.6em;
-      margin: 4px 0;
+      font-size: 1.2em;
+      margin: 6px 0;
     }
 
-    .time {
+    .clock .time {
       display: inline-block;
-      min-width: 20px;
+      min-width: 24px;
     }
 
     .colon {
-      font-size: 1em;
-      display: inline-block;
       padding: 0 4px;
-    }
-
-    /* 🌙 Explicit Dark Mode */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #1a1a1a;
-        color: white;
-      }
-
-      .widget {
-        background-color: #1a1a1a;
-        border-color: white;
-        color: white;
-        box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.1);
-      }
     }
   </style>
 </head>
 <body>
-
-  <div class="widget">
+  <div class="widget" id="widget">
     <div class="greet" id="greet"></div>
     <div class="date" id="date"></div>
     <div class="clock">
-      <div class="time" id="hour"></div>
-      <div class="colon">:</div>
-      <div class="time" id="min"></div>
-      <div class="colon">:</div>
-      <div class="time" id="sec"></div>
+      <span class="time" id="hour"></span><span class="colon">:</span>
+      <span class="time" id="min"></span><span class="colon">:</span>
+      <span class="time" id="sec"></span>
     </div>
   </div>
 
   <script>
-    function dispalyGreetings(today) {
-      let hrs = today.getHours();
+    function detectTheme() {
+      const bg = window.getComputedStyle(document.body).backgroundColor;
+      const isDark = bg === 'rgb(25, 25, 25)' || bg === 'rgb(24, 24, 27)' || bg === 'rgb(0, 0, 0)';
+      return isDark ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+      const widget = document.getElementById("widget");
+      if (theme === "dark") {
+        document.body.style.backgroundColor = "#1a1a1a";
+        widget.style.backgroundColor = "#1a1a1a";
+        widget.style.color = "white";
+        widget.style.borderColor = "white";
+      } else {
+        document.body.style.backgroundColor = "white";
+        widget.style.backgroundColor = "white";
+        widget.style.color = "black";
+        widget.style.borderColor = "black";
+      }
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const h = pad(twelveHour(now.getHours()));
+      const m = pad(now.getMinutes());
+      const s = pad(now.getSeconds()) + (now.getHours() >= 12 ? " pm" : " am");
+      document.getElementById("hour").textContent = h;
+      document.getElementById("min").textContent = m;
+      document.getElementById("sec").textContent = s;
+    }
+
+    function updateDate() {
+      const now = new Date();
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      document.getElementById("date").textContent =
+        `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+    }
+
+    function updateGreet() {
+      const now = new Date();
+      const hrs = now.getHours();
       let greet = "";
-      if (hrs < 12) greet = 'Good Morning';
-      else if (hrs >= 12 && hrs < 17) greet = 'Good Afternoon';
-      else greet = 'Good Evening';
-      document.getElementById('greet').innerHTML = greet;
+      if (hrs < 12) greet = "Good Morning";
+      else if (hrs < 17) greet = "Good Afternoon";
+      else greet = "Good Evening";
+      document.getElementById("greet").textContent = greet;
     }
 
-    function dispalyDate(today) {
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const months = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
-      const dayName = days[today.getDay()];
-      const monthName = months[today.getMonth()];
-      const date = today.getDate();
-      const year = today.getFullYear();
-      document.getElementById('date').innerHTML = `${dayName}, ${monthName} ${date} ${year}`;
+    function pad(n) {
+      return n < 10 ? "0" + n : n;
     }
 
-    function dispalyClock(today) {
-      let hour = padZeros(twelveHour(today.getHours()));
-      let minutes = padZeros(today.getMinutes());
-      let seconds = padZeros(today.getSeconds());
-      seconds += today.getHours() >= 12 ? ' pm' : ' am';
-      document.getElementById('hour').innerHTML = hour;
-      document.getElementById('min').innerHTML = minutes;
-      document.getElementById('sec').innerHTML = seconds;
+    function twelveHour(h) {
+      return h % 12 === 0 ? 12 : h % 12;
     }
 
-    function twelveHour(hour) {
-      return hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+    function start() {
+      const theme = detectTheme();
+      applyTheme(theme);
+      updateGreet();
+      updateDate();
+      updateClock();
+      setInterval(updateClock, 1000);
     }
 
-    function padZeros(num) {
-      return num < 10 ? '0' + num : num;
-    }
-
-    function dispalyWidget() {
-      const today = new Date();
-      dispalyGreetings(today);
-      dispalyDate(today);
-      dispalyClock(today);
-      setTimeout(dispalyWidget, 500);
-    }
-
-    dispalyWidget();
+    start();
   </script>
-
 </body>
 </html>
