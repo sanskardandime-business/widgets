@@ -2,143 +2,102 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Student Quote Widget</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Merriweather&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      color-scheme: light dark;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Motivational Quote Widget</title>
 
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+
+  <style>
     body {
       margin: 0;
-      padding: 20px;
-      font-family: 'Poppins', sans-serif;
+      padding: 0;
+      background: white;
+      color: black;
+      font-family: 'Playfair Display', serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: white;
-      transition: background-color 0.4s ease;
     }
 
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #1e1e1e;
-      }
+    .quote-widget {
+      max-width: 400px;
+      padding: 20px;
+      border: 2px solid black;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
     }
 
-    blockquote {
-      font-family: 'Merriweather', serif;
-      font-style: italic;
-      font-size: 1.3rem;
-      padding: 25px 35px;
-      max-width: 500px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      transition: color 0.5s ease;
-      background: transparent;
-    }
-
-    blockquote:before {
-      content: "“";
-      font-size: 3rem;
-      position: absolute;
-      left: 15px;
-      top: 5px;
-      color: rgba(0, 0, 0, 0.2);
-    }
-
-    footer {
-      margin-top: 15px;
-      text-align: right;
-      font-weight: 600;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    @media (max-width: 500px) {
-      blockquote {
-        max-width: 90vw;
-        font-size: 1.1rem;
-      }
+    .quote-text {
+      font-size: 0.95em;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <blockquote id="quote">Loading quote...</blockquote>
+  <div class="quote-widget">
+    <div class="quote-text" id="quote"></div>
+  </div>
 
   <script>
     const quotes = [
-      { text: "Success doesn’t come from what you do occasionally, it comes from what you do consistently.", author: "Marie Forleo" },
-      { text: "Study while others are sleeping. Work while others are loafing. Prepare while others are playing.", author: "William Arthur Ward" },
-      { text: "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.", author: "Colin Powell" },
-      { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
-      { text: "The expert in anything was once a beginner.", author: "Helen Hayes" },
-      { text: "Don’t wish it were easier. Wish you were better.", author: "Jim Rohn" },
-      { text: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe" },
-      { text: "If you can’t fly, then run. If you can’t run, then walk. But whatever you do, keep moving forward.", author: "Martin Luther King Jr." },
-      { text: "Motivation is what gets you started. Habit is what keeps you going.", author: "Jim Ryun" },
-      { text: "Procrastination is the thief of time.", author: "Edward Young" },
-      { text: "Doubt kills more dreams than failure ever will.", author: "Suzy Kassem" },
-      { text: "Discipline is choosing between what you want now and what you want most.", author: "Abraham Lincoln" },
-      { text: "Small steps every day lead to big results.", author: "Unknown" },
-      { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
-      { text: "You don’t have to be perfect to be amazing.", author: "Unknown" },
-      { text: "Wake up with determination. Go to bed with satisfaction.", author: "Unknown" },
-      { text: "One day or day one. You decide.", author: "Unknown" },
-      { text: "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", author: "Dr. Seuss" },
-      { text: "Don’t let what you cannot do interfere with what you can do.", author: "John Wooden" },
-      { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier" },
-      { text: "The future depends on what you do today.", author: "Mahatma Gandhi" },
-      { text: "Failing to prepare is preparing to fail.", author: "Benjamin Franklin" },
-      { text: "A little progress each day adds up to big results.", author: "Unknown" },
-      { text: "Dreams don’t work unless you do.", author: "John C. Maxwell" },
-      { text: "Never let the fear of striking out keep you from playing the game.", author: "Babe Ruth" },
-      { text: "Your education is a dress rehearsal for a life that is yours to lead.", author: "Nora Ephron" },
-      { text: "Success doesn’t happen overnight. Keep going.", author: "Unknown" },
-      { text: "The best preparation for tomorrow is doing your best today.", author: "H. Jackson Brown Jr." },
-      { text: "Work hard in silence. Let your success make the noise.", author: "Frank Ocean" },
-      { text: "Winners are not people who never fail, but people who never quit.", author: "Unknown" },
-      { text: "Your time is limited, so don’t waste it living someone else’s life.", author: "Steve Jobs" },
-      { text: "It always seems impossible until it’s done.", author: "Nelson Mandela" },
-      { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
-      { text: "Success isn’t about being the best. It’s about always getting better.", author: "Behance" },
-      { text: "Don’t watch the clock. Do what it does. Keep going.", author: "Sam Levenson" },
-      { text: "Your only limit is your mind.", author: "Unknown" },
-      { text: "You don’t need to be great to start, but you have to start to be great.", author: "Zig Ziglar" },
-      { text: "Learning is not attained by chance, it must be sought for with ardor and diligence.", author: "Abigail Adams" },
-      { text: "It’s not about being the best. It’s about being better than you were yesterday.", author: "Unknown" },
-      { text: "When you feel like quitting, think about why you started.", author: "Unknown" },
-      { text: "You are capable of amazing things.", author: "Unknown" },
-      { text: "Action is the foundational key to all success.", author: "Pablo Picasso" },
-      { text: "A winner is a dreamer who never gives up.", author: "Nelson Mandela" },
-      { text: "Hard work beats talent when talent doesn’t work hard.", author: "Tim Notke" },
-      { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
-      { text: "Knowledge is power. Information is liberating. Education is the premise of progress.", author: "Kofi Annan" },
-      { text: "Even if you’re on the right track, you’ll get run over if you just sit there.", author: "Will Rogers" },
-      { text: "You don’t need to see the whole staircase, just take the first step.", author: "Martin Luther King Jr." },
-      { text: "The earlier you start working on something, the earlier you will see results.", author: "Unknown" }
+      "Believe you can and you're halfway there.",
+      "Your limitation—it’s only your imagination.",
+      "Push yourself, because no one else is going to do it for you.",
+      "Sometimes later becomes never. Do it now.",
+      "Great things never come from comfort zones.",
+      "Dream it. Wish it. Do it.",
+      "Success doesn’t just find you. You have to go out and get it.",
+      "The harder you work for something, the greater you’ll feel when you achieve it.",
+      "Dream bigger. Do bigger.",
+      "Don’t stop when you’re tired. Stop when you’re done.",
+      "Wake up with determination. Go to bed with satisfaction.",
+      "Do something today that your future self will thank you for.",
+      "Little things make big days.",
+      "It’s going to be hard, but hard does not mean impossible.",
+      "Don’t wait for opportunity. Create it.",
+      "Sometimes we’re tested not to show our weaknesses, but to discover our strengths.",
+      "The key to success is to focus on goals, not obstacles.",
+      "Stay positive, work hard, make it happen.",
+      "Hard work beats talent when talent doesn't work hard.",
+      "Don’t wish it were easier. Wish you were better.",
+      "Success is what comes after you stop making excuses.",
+      "You don’t have to be great to start, but you have to start to be great.",
+      "Do what you can with all you have, wherever you are.",
+      "Go the extra mile. It’s never crowded.",
+      "The secret of getting ahead is getting started.",
+      "Act as if what you do makes a difference. It does.",
+      "Quality is not an act, it is a habit.",
+      "The future depends on what you do today.",
+      "Opportunities don't happen. You create them.",
+      "The only place where success comes before work is in the dictionary.",
+      "Don't let yesterday take up too much of today.",
+      "You learn more from failure than from success.",
+      "We may encounter many defeats but we must not be defeated.",
+      "Knowing is not enough; we must apply. Willing is not enough; we must do.",
+      "Imagine your life is perfect in every respect; what would it look like?",
+      "We generate fears while we sit. We overcome them by action.",
+      "Whether you think you can or think you can’t, you’re right.",
+      "Security is mostly a superstition. Life is either a daring adventure or nothing.",
+      "The man who has confidence in himself gains the confidence of others.",
+      "The only limit to our realization of tomorrow is our doubts of today.",
+      "Creativity is intelligence having fun.",
+      "What you lack in talent can be made up with desire and hustle.",
+      "Do what you feel in your heart to be right – for you’ll be criticized anyway.",
+      "Develop an ‘attitude of gratitude’. Say thank you to everyone you meet.",
+      "You are never too old to set another goal or to dream a new dream.",
+      "To see what is right and not do it is a lack of courage.",
+      "Reading is to the mind, as exercise is to the body.",
+      "Fake it until you make it! Act as if you had all the confidence.",
+      "Go confidently in the direction of your dreams. Live the life you have imagined.",
+      "Everything you’ve ever wanted is on the other side of fear."
     ];
 
-    const textColors = [
-      "#1a1a1a", "#2e7d32", "#3f51b5", "#d32f2f", "#6a1b9a", "#e65100",
-      "#006064", "#4e342e", "#0277bd", "#5d4037", "#00897b", "#37474f",
-      "#1e88e5", "#ad1457", "#fbc02d"
-    ];
-
-    function applyRandomTextColor() {
-      const color = textColors[Math.floor(Math.random() * textColors.length)];
-      document.getElementById("quote").style.color = color;
-    }
-
-    function showRandomQuote() {
-      const randomIndex = Math.floor(Math.random() * quotes.length);
-      const q = quotes[randomIndex];
-      document.getElementById('quote').innerHTML = `“${q.text}”<footer>— ${q.author}</footer>`;
-    }
-
-    applyRandomTextColor();
-    showRandomQuote();
+    const quoteBox = document.getElementById("quote");
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    quoteBox.textContent = quotes[randomIndex];
   </script>
 </body>
 </html>
