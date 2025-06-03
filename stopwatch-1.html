@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stopwatch Widget</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text: #6B7280;
+      --accent: #4169E1;
+      --border: #4B5563;
+      --active: #FF8C00;
+    }
+
+    body {
+      background: transparent;
+      font-family: 'Ubuntu', sans-serif;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    .stopwatch {
+      backdrop-filter: blur(6px);
+      background-color: transparent;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      width: 200px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .display {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .controls button {
+      font-size: 16px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .controls button:active {
+      background: var(--active);
+      color: white;
+      border-color: var(--active);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stopwatch">
+    <div class="title">Stopwatch</div>
+    <div class="display" id="display">00:00.00</div>
+    <div class="controls">
+      <button id="startPause">▶</button>
+      <button id="reset">⟲</button>
+    </div>
+  </div>
+
+  <script>
+    let running = false;
+    let startTime = 0;
+    let elapsed = 0;
+    let interval;
+
+    const display = document.getElementById('display');
+    const startPauseBtn = document.getElementById('startPause');
+    const resetBtn = document.getElementById('reset');
+
+    function formatTime(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const seconds = String(totalSeconds % 60).padStart(2, '0');
+      const hundredths = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
+      return `${minutes}:${seconds}.${hundredths}`;
+    }
+
+    function updateDisplay() {
+      const now = Date.now();
+      const time = elapsed + (running ? now - startTime : 0);
+      display.textContent = formatTime(time);
+    }
+
+    function toggleStartPause() {
+      if (running) {
+        elapsed += Date.now() - startTime;
+        clearInterval(interval);
+        startPauseBtn.textContent = '▶';
+      } else {
+        startTime = Date.now();
+        interval = setInterval(updateDisplay, 10);
+        startPauseBtn.textContent = '⏸';
+      }
+      running = !running;
+    }
+
+    function resetStopwatch() {
+      clearInterval(interval);
+      running = false;
+      startTime = 0;
+      elapsed = 0;
+      display.textContent = '00:00.00';
+      startPauseBtn.textContent = '▶';
+    }
+
+    startPauseBtn.onclick = toggleStartPause;
+    resetBtn.onclick = resetStopwatch;
+  </script>
+
+</body>
+</html>
