@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown Widget</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text: #6B7280;
+      --accent: #4169E1;
+      --border: #4B5563;
+      --active: #FF8C00;
+    }
+
+    body {
+      background: transparent;
+      font-family: 'Ubuntu', sans-serif;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    .stopwatch {
+      backdrop-filter: blur(6px);
+      background-color: transparent;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      width: 200px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .display {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .controls button {
+      font-size: 16px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .controls button:active {
+      background: var(--active);
+      color: white;
+      border-color: var(--active);
+    }
+
+    .input-time {
+      width: 60px;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .input-label {
+      font-size: 12px;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stopwatch">
+    <div class="title">Countdown</div>
+    <div class="input-label">Minutes</div>
+    <input type="number" id="inputMinutes" class="input-time" min="1" value="5">
+    <div class="display" id="display">05:00</div>
+    <div class="controls">
+      <button id="startPause">▶</button>
+      <button id="reset">⟲</button>
+    </div>
+  </div>
+
+  <script>
+    let countdown;
+    let running = false;
+    let totalTime = 5 * 60; // seconds
+    let timeLeft = totalTime;
+
+    const display = document.getElementById('display');
+    const startPauseBtn = document.getElementById('startPause');
+    const resetBtn = document.getElementById('reset');
+    const inputMinutes = document.getElementById('inputMinutes');
+
+    function formatTime(seconds) {
+      const min = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const sec = String(seconds % 60).padStart(2, '0');
+      return `${min}:${sec}`;
+    }
+
+    function updateDisplay() {
+      display.textContent = formatTime(timeLeft);
+    }
+
+    function toggleStartPause() {
+      if (running) {
+        clearInterval(countdown);
+        startPauseBtn.textContent = '▶';
+      } else {
+        if (timeLeft <= 0) {
+          timeLeft = totalTime;
+        }
+        countdown = setInterval(() => {
+          timeLeft--;
+          updateDisplay();
+          if (timeLeft <= 0) {
+            clearInterval(countdown);
+            running = false;
+            startPauseBtn.textContent = '▶';
+          }
+        }, 1000);
+        startPauseBtn.textContent = '⏸';
+      }
+      running = !running;
+    }
+
+    function resetTimer() {
+      clearInterval(countdown);
+      running = false;
+      const min = Math.max(1, parseInt(inputMinutes.value) || 5);
+      totalTime = min * 60;
+      timeLeft = totalTime;
+      updateDisplay();
+      startPauseBtn.textContent = '▶';
+    }
+
+    inputMinutes.addEventListener('change', () => {
+      if (!running) {
+        const min = Math.max(1, parseInt(inputMinutes.value) || 5);
+        totalTime = min * 60;
+        timeLeft = totalTime;
+        updateDisplay();
+      }
+    });
+
+    startPauseBtn.onclick = toggleStartPause;
+    resetBtn.onclick = resetTimer;
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>
