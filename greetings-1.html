@@ -1,94 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Greetings Widget</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    .greeting-card {
-      max-width: 300px;
-      padding: 5px;
-      border-radius: 0;
-      box-shadow: none;
-    }
-
-    .greeting-card h1 {
-      margin: 0 0 10px;
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .greeting-card p {
-      margin: 4px 0;
-      font-size: 14px;
-    }
-
-    /* Light Theme */
-    @media (prefers-color-scheme: light) {
-      body {
-        background-color: white;
-        color: rgb(25, 25, 25);
-      }
-
-      .greeting-card {
-        background-color: white;
-        color: rgb(25, 25, 25);
-      }
-    }
-
-    /* Dark Theme */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: rgb(25, 25, 25);
-        color: white;
-      }
-
-      .greeting-card {
-        background-color: rgb(25, 25, 25);
-        color: white;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="greeting-card">
-    <h1 id="greeting">Hello!</h1>
-    <p id="date">Today is ...</p>
-    <p id="time">Time is ...</p>
-  </div>
-
-  <script>
-    function updateGreeting() {
-      const greetingEl = document.getElementById('greeting');
-      const dateEl = document.getElementById('date');
-      const timeEl = document.getElementById('time');
-
-      const now = new Date();
-      const hour = now.getHours();
-
-      let greeting = 'Hello';
-      if (hour < 12) greeting = 'Good Morning';
-      else if (hour < 18) greeting = 'Good Afternoon';
-      else greeting = 'Good Evening';
-
-      const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-
-      greetingEl.textContent = greeting;
-      dateEl.textContent = `Today is ${now.toLocaleDateString(undefined, dateOptions)}`;
-      timeEl.textContent = `Time is ${now.toLocaleTimeString(undefined, timeOptions)}`;
-    }
-
-    updateGreeting();
-    setInterval(updateGreeting, 1000);
-  </script>
-</body>
+   <head>
+      <meta charset="UTF-8" />
+      <title>Greetings Widget</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <style>
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+         :root {
+         --color: #008080;
+         /*
+         Top Text Color Picks (Safe on Both Light and Dark Themes)
+         - Slate Gray:    #6B7280
+         - Cool Gray:     #4B5563
+         - Royal Blue:    #4169E1
+         - Teal:          #008080
+         - Dark Orange:   #FF8C00
+         - Medium Gray:   #7C7C7C
+         */
+         }
+         body {
+         font-family: 'Poppins', sans-serif;
+         margin: 0;
+         padding: 0;
+         }
+         .greeting-card {
+         max-width: 300px;
+         padding: 5px;
+         border-radius: 0;
+         box-shadow: none;
+         color: var(--color);
+         }
+         .greeting-card h1 {
+         margin: 0 0 10px;
+         font-size: 20px;
+         font-weight: 600;
+         }
+         .greeting-card p {
+         margin: 4px 0;
+         font-size: 14px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="greeting-card">
+         <h1 id="greeting">Hello!</h1>
+         <p id="date">Today is ...</p>
+         <p id="time">Time is ...</p>
+      </div>
+      <script>
+         function updateGreeting() {
+           const greetingEl = document.getElementById('greeting');
+           const dateEl = document.getElementById('date');
+           const timeEl = document.getElementById('time');
+         
+           const now = new Date();
+           const hour = now.getHours();
+         
+           let greeting = 'Hello';
+           if (hour < 12) greeting = 'Good Morning';
+           else if (hour < 18) greeting = 'Good Afternoon';
+           else greeting = 'Good Evening';
+         
+           const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+           const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+         
+           greetingEl.textContent = greeting;
+           dateEl.textContent = `Today is ${now.toLocaleDateString(undefined, dateOptions)}`;
+           timeEl.textContent = `Time is ${now.toLocaleTimeString(undefined, timeOptions)}`;
+         }
+         
+         updateGreeting();
+         setInterval(updateGreeting, 1000);
+      </script>
+   </body>
 </html>
