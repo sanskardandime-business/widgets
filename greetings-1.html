@@ -6,8 +6,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <style>
          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-         :root {
-         --color: #008080;
          /*
          Top Text Color Picks (Safe on Both Light and Dark Themes)
          - Slate Gray:    #6B7280
@@ -17,7 +15,6 @@
          - Dark Orange:   #FF8C00
          - Medium Gray:   #7C7C7C
          */
-         }
          body {
          font-family: 'Poppins', sans-serif;
          margin: 0;
@@ -28,16 +25,17 @@
          padding: 5px;
          border-radius: 0;
          box-shadow: none;
-         color: var(--color);
          }
          .greeting-card h1 {
          margin: 0 0 10px;
          font-size: 20px;
          font-weight: 600;
+         color: #4169E1;
          }
          .greeting-card p {
          margin: 4px 0;
          font-size: 14px;
+         color: #008080;
          }
       </style>
    </head>
@@ -65,8 +63,8 @@
            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
          
            greetingEl.textContent = greeting;
-           dateEl.textContent = `Today is ${now.toLocaleDateString(undefined, dateOptions)}`;
-           timeEl.textContent = `Time is ${now.toLocaleTimeString(undefined, timeOptions)}`;
+           dateEl.textContent = `${now.toLocaleDateString(undefined, dateOptions)}`;
+           timeEl.textContent = `${now.toLocaleTimeString(undefined, timeOptions)}`;
          }
          
          updateGreeting();
