@@ -1,210 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8" />
-      <title>Pomodoro</title>
-      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
-      <style>
-         /*
-         Compact Pomodoro Widget
-         - Text: #6B7280 (Slate Gray)
-         - Border/Accent: #4B5563 (Cool Gray), #4169E1 (Royal Blue)
-         - Active Button: #FF8C00 (Dark Orange)
-         - Transparent page with blur effect
-         */
-         /*
-         Top Text Color Picks (Safe on Both Light and Dark Themes)
-         - Slate Gray:    #6B7280
-         - Cool Gray:     #4B5563
-         - Royal Blue:    #4169E1
-         - Teal:          #008080
-         - Dark Orange:   #FF8C00
-         - Medium Gray:   #7C7C7C
-         */
-         :root {
-         --text: #6B7280;
-         --accent: #4169E1;
-         --border: #4B5563;
-         --active: #FF8C00;
-         }
-         body {
-         background: transparent;
-         font-family: 'Ubuntu', sans-serif;
-         color: var(--text);
-         margin: 0;
-         padding: 0;
-         }
-         .pomodoro {
-         backdrop-filter: blur(5px);
-         background-color: rgba(255, 255, 255, 0.04);
-         border: 1px solid var(--border);
-         border-radius: 12px;
-         padding: 20px;
-         width: 220px;
-         text-align: center;
-         }
-         .title {
-         font-size: 20px;
-         font-weight: bold;
-         color: var(--accent);
-         margin-bottom: 10px;
-         }
-         .time {
-         font-size: 40px;
-         margin: 10px 0;
-         font-weight: bold;
-         }
-         .controls {
-         margin: 10px 0;
-         }
-         .controls button {
-         font-size: 16px;
-         padding: 6px 10px;
-         margin: 0 8px;
-         border: 1px solid var(--border);
-         border-radius: 50%;
-         background: transparent;
-         color: var(--text);
-         cursor: pointer;
-         transition: 0.2s;
-         }
-         .controls button:active {
-         background: var(--active);
-         color: white;
-         border-color: var(--active);
-         }
-         .inputs {
-         display: flex;
-         justify-content: space-between;
-         margin-top: 10px;
-         }
-         .input-box {
-         text-align: center;
-         flex: 1;
-         }
-         .input-box h4 {
-         margin: 0 0 4px;
-         font-size: 12px;
-         color: var(--accent);
-         }
-         .input-box input {
-         width: 36px;
-         padding: 4px;
-         text-align: center;
-         border: 1px solid var(--border);
-         border-radius: 4px;
-         background: transparent;
-         color: var(--text);
-         font-size: 14px;
-         }
-         input::-webkit-inner-spin-button,
-         input::-webkit-outer-spin-button {
-         -webkit-appearance: none;
-         margin: 0;
-         }
-      </style>
-   </head>
-   <body>
-      <div class="pomodoro">
-         <div class="title">Pomodoro</div>
-         <div class="time" id="time">25:00</div>
-         <div class="controls">
-            <button id="startPauseBtn">▶</button>
-            <button id="resetBtn">⟲</button>
-         </div>
-         <div class="inputs">
-            <div class="input-box">
-               <h4>Work (min)</h4>
-               <input type="number" id="session-input" min="1" value="25">
-            </div>
-            <div class="input-box">
-               <h4>Rest (min)</h4>
-               <input type="number" id="rest-input" min="1" value="5">
-            </div>
-         </div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Pomodoro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text: #6B7280;
+      --accent: #4169E1;
+      --border: #4B5563;
+      --active: #FF8C00;
+    }
+
+    body {
+      background: transparent;
+      font-family: 'Ubuntu', sans-serif;
+      color: var(--text);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .pomodoro {
+      backdrop-filter: blur(6px);
+      background-color: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      width: 230px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .time {
+      font-size: 40px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .controls {
+      margin: 10px 0;
+    }
+
+    .controls button {
+      font-size: 16px;
+      padding: 6px 10px;
+      margin: 0 5px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .controls button:active {
+      background: var(--active);
+      color: white;
+      border-color: var(--active);
+    }
+
+    .inputs {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .input-box {
+      text-align: center;
+      flex: 1;
+    }
+
+    .input-box h4 {
+      margin: 0 0 4px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .input-box input {
+      width: 36px;
+      padding: 4px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    input::-webkit-inner-spin-button,
+    input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .status-label {
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="pomodoro">
+    <div class="title">Pomodoro</div>
+    <div class="status-label" id="statusLabel">Work</div>
+    <div class="time" id="time">25:00</div>
+
+    <div class="controls">
+      <button id="startPauseBtn">▶</button>
+      <button id="resetBtn">⟲</button>
+      <button id="loopToggleBtn">🔁</button>
+    </div>
+
+    <div class="inputs">
+      <div class="input-box">
+        <h4>Work (min)</h4>
+        <input type="number" id="session-input" min="1" value="25">
       </div>
-      <!-- Audio Alerts -->
-      <audio id="session-end-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7e258b3c24.mp3" preload="auto"></audio>
-      <audio id="rest-end-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_a743a408cc.mp3" preload="auto"></audio>
-      <script>
-         let isRunning = false;
-         let isSession = true;
-         let sessionLength = 25;
-         let restLength = 5;
-         let timeLeft = sessionLength * 60;
-         let timer;
-         
-         const timeDisplay = document.getElementById("time");
-         const startPauseBtn = document.getElementById("startPauseBtn");
-         const resetBtn = document.getElementById("resetBtn");
-         const sessionInput = document.getElementById("session-input");
-         const restInput = document.getElementById("rest-input");
-         const sessionSound = document.getElementById("session-end-sound");
-         const restSound = document.getElementById("rest-end-sound");
-         
-         function updateTimeDisplay() {
-           const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-           const sec = String(timeLeft % 60).padStart(2, '0');
-           timeDisplay.textContent = `${min}:${sec}`;
-         }
-         
-         function toggleInputs(disabled) {
-           sessionInput.disabled = disabled;
-           restInput.disabled = disabled;
-         }
-         
-         function toggleTimer() {
-           if (isRunning) {
-             clearInterval(timer);
-             startPauseBtn.textContent = "▶";
-             toggleInputs(false);
-           } else {
-             toggleInputs(true);
-             timer = setInterval(() => {
-               timeLeft--;
-               updateTimeDisplay();
-               if (timeLeft <= 0) {
-                 if (isSession) {
-                   sessionSound.play();
-                 } else {
-                   restSound.play();
-                 }
-                 isSession = !isSession;
-                 timeLeft = (isSession ? sessionLength : restLength) * 60;
-               }
-             }, 1000);
-             startPauseBtn.textContent = "▐▐";
-           }
-           isRunning = !isRunning;
-         }
-         
-         function resetTimer() {
-           clearInterval(timer);
-           isRunning = false;
-           isSession = true;
-           sessionLength = Math.max(1, parseInt(sessionInput.value) || 1);
-           restLength = Math.max(1, parseInt(restInput.value) || 1);
-           timeLeft = sessionLength * 60;
-           updateTimeDisplay();
-           startPauseBtn.textContent = "▶";
-           toggleInputs(false);
-         }
-         
-         function updateLengths() {
-           if (!isRunning) {
-             sessionLength = Math.max(1, parseInt(sessionInput.value) || 1);
-             restLength = Math.max(1, parseInt(restInput.value) || 1);
-             timeLeft = (isSession ? sessionLength : restLength) * 60;
-             updateTimeDisplay();
-           }
-         }
-         
-         sessionInput.addEventListener("change", updateLengths);
-         restInput.addEventListener("change", updateLengths);
-         startPauseBtn.onclick = toggleTimer;
-         resetBtn.onclick = resetTimer;
-         
-         updateTimeDisplay();
-      </script>
-   </body>
+      <div class="input-box">
+        <h4>Rest (min)</h4>
+        <input type="number" id="rest-input" min="1" value="5">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isRunning = false;
+    let isSession = true;
+    let loopMode = true;
+
+    let sessionLength = 25;
+    let restLength = 5;
+    let timeLeft = sessionLength * 60;
+    let timer;
+
+    const timeDisplay = document.getElementById("time");
+    const startPauseBtn = document.getElementById("startPauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const loopToggleBtn = document.getElementById("loopToggleBtn");
+    const statusLabel = document.getElementById("statusLabel");
+
+    const sessionInput = document.getElementById("session-input");
+    const restInput = document.getElementById("rest-input");
+
+    function updateTimeDisplay() {
+      const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const sec = String(timeLeft % 60).padStart(2, '0');
+      timeDisplay.textContent = `${min}:${sec}`;
+    }
+
+    function toggleInputs(disabled) {
+      sessionInput.disabled = disabled;
+      restInput.disabled = disabled;
+    }
+
+    function switchMode() {
+      isSession = !isSession;
+      statusLabel.textContent = isSession ? "Work" : "Rest";
+      timeLeft = (isSession ? sessionLength : restLength) * 60;
+      updateTimeDisplay();
+    }
+
+    function toggleTimer() {
+      if (isRunning) {
+        clearInterval(timer);
+        startPauseBtn.textContent = "▶";
+        toggleInputs(false);
+      } else {
+        toggleInputs(true);
+        timer = setInterval(() => {
+          timeLeft--;
+          updateTimeDisplay();
+          if (timeLeft <= 0) {
+            if (loopMode) {
+              switchMode();
+            } else {
+              clearInterval(timer);
+              isRunning = false;
+              startPauseBtn.textContent = "▶";
+              toggleInputs(false);
+            }
+          }
+        }, 1000);
+        startPauseBtn.textContent = "⏸";
+      }
+      isRunning = !isRunning;
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      isRunning = false;
+      isSession = true;
+      sessionLength = Math.max(1, parseInt(sessionInput.value) || 1);
+      restLength = Math.max(1, parseInt(restInput.value) || 1);
+      timeLeft = sessionLength * 60;
+      statusLabel.textContent = "Work";
+      updateTimeDisplay();
+      startPauseBtn.textContent = "▶";
+      toggleInputs(false);
+    }
+
+    function updateLengths() {
+      if (!isRunning) {
+        sessionLength = Math.max(1, parseInt(sessionInput.value) || 1);
+        restLength = Math.max(1, parseInt(restInput.value) || 1);
+        timeLeft = (isSession ? sessionLength : restLength) * 60;
+        updateTimeDisplay();
+      }
+    }
+
+    function toggleLoop() {
+      loopMode = !loopMode;
+      loopToggleBtn.textContent = loopMode ? "🔁" : "⏹️";
+    }
+
+    sessionInput.addEventListener("change", updateLengths);
+    restInput.addEventListener("change", updateLengths);
+    startPauseBtn.onclick = toggleTimer;
+    resetBtn.onclick = resetTimer;
+    loopToggleBtn.onclick = toggleLoop;
+
+    updateTimeDisplay();
+  </script>
+
+</body>
 </html>
