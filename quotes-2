@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Quotes Widget</title>
+      <style>
+         :root {
+         --slate-gray: #6B7280;
+         --cool-gray: #4B5563;
+         --royal-blue: #4169E1;
+         --teal: #008080;
+         --dark-orange: #FF8C00;
+         --medium-gray: #7C7C7C;
+         }
+         body {
+         margin: 0;
+         padding: 0;
+         background: transparent;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+         font-family: 'Segoe UI', sans-serif;
+         overflow: hidden;
+         }
+         .quote-box {
+         padding: clamp(1rem, 4vw, 2rem);
+         border-radius: 12px;
+         color: var(--text-color);
+         font-size: clamp(1.2rem, 4vw, 1.8rem);
+         max-width: 90vw;
+         text-align: center;
+         line-height: 1.6;
+         transition: opacity 0.4s ease-in-out;
+         }
+         @keyframes fadeIn {
+         from { opacity: 0; transform: translateY(8px); }
+         to { opacity: 1; transform: translateY(0); }
+         }
+         .fade-in {
+         animation: fadeIn 0.5s ease-in;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="quote-box" id="quoteBox">“Loading quote...”</div>
+      <script>
+         const quotes = [
+           "A little progress each day adds up to big results.",
+         "Be stubborn about your goals and flexible about your methods.",
+         "Be the hardest worker in the room.",
+         "Big journeys begin with small steps.",
+         "Challenge yourself every day to be better than yesterday.",
+         "Chase excellence, not approval.",
+         "Confidence comes from preparation.",
+         "Discipline is the bridge between goals and accomplishment.",
+         "Don’t be afraid to fail. Be afraid not to try.",
+         "Don’t compare yourself to others. Compare yourself to who you were yesterday.",
+         "Dreams don’t work unless you do.",
+         "Effort is never wasted, even when it leads to failure.",
+         "Even slow progress is better than no progress.",
+         "Every accomplishment starts with the decision to try.",
+         "Every second you spend studying brings you closer to your goal.",
+         "Focus is the key to unlocking potential.",
+         "Growth is painful. Change is painful. But nothing is as painful as staying stuck.",
+         "It always seems impossible until it's done.",
+         "Keep going. Everything you need will come to you at the perfect time.",
+         "Keep your eyes on the goal, not the obstacles.",
+         "Learn something new every single day.",
+         "Learning never exhausts the mind; it strengthens it.",
+         "Motivation gets you started. Habit keeps you going.",
+         "No pressure, no diamonds.",
+         "One day or day one. You decide.",
+         "Preparation today leads to confidence tomorrow.",
+         "Progress over perfection.",
+         "Push past your limits, that’s where growth happens.",
+         "Small progress is still progress.",
+         "Start where you are. Use what you have. Do what you can.",
+         "Stay focused. Stay committed. Stay consistent.",
+         "Study while others are sleeping. Work while others are playing.",
+         "Success is built on consistency.",
+         "Success is the sum of small efforts, repeated day in and day out.",
+         "Success starts with self-belief.",
+         "The best way to predict the future is to create it.",
+         "The expert in anything was once a beginner.",
+         "The future belongs to those who prepare for it today.",
+         "The more you learn, the more you grow.",
+         "The pain you feel today will be the strength you feel tomorrow.",
+         "Turn your weaknesses into your biggest strengths.",
+         "Winners are not those who never fail but those who never quit.",
+         "Work hard in silence. Let your success make the noise.",
+         "You are capable of more than you know.",
+         "You don’t get what you wish for. You get what you work for.",
+         "You miss 100% of the shots you don’t take.",
+         "Your dreams are valid. Chase them with purpose.",
+         "Your focus determines your reality.",
+         "Your habits define your future.",
+         "You’re not behind. You’re just on your own path.",
+         "Believe you can and you're halfway there.",
+                "Your limitation—it’s only your imagination.",
+                "Push yourself, because no one else is going to do it for you.",
+                "Sometimes later becomes never. Do it now.",
+                "Great things never come from comfort zones.",
+                "Dream it. Wish it. Do it.",
+                "Success doesn’t just find you. You have to go out and get it.",
+                "The harder you work for something, the greater you’ll feel when you achieve it.",
+                "Dream bigger. Do bigger.",
+                "Don’t stop when you’re tired. Stop when you’re done.",
+                "Wake up with determination. Go to bed with satisfaction.",
+                "Do something today that your future self will thank you for.",
+                "Little things make big days.",
+                "It’s going to be hard, but hard does not mean impossible.",
+                "Don’t wait for opportunity. Create it.",
+                "Sometimes we’re tested not to show our weaknesses, but to discover our strengths.",
+                "The key to success is to focus on goals, not obstacles.",
+                "Stay positive, work hard, make it happen.",
+                "Hard work beats talent when talent doesn't work hard.",
+                "Don’t wish it were easier. Wish you were better.",
+                "Success is what comes after you stop making excuses.",
+                "You don’t have to be great to start, but you have to start to be great.",
+                "Do what you can with all you have, wherever you are.",
+                "Go the extra mile. It’s never crowded.",
+                "The secret of getting ahead is getting started.",
+                "Act as if what you do makes a difference. It does.",
+                "Quality is not an act, it is a habit.",
+                "The future depends on what you do today.",
+                "Opportunities don't happen. You create them.",
+                "The only place where success comes before work is in the dictionary.",
+                "Don't let yesterday take up too much of today.",
+                "You learn more from failure than from success.",
+                "We may encounter many defeats but we must not be defeated.",
+                "Knowing is not enough; we must apply. Willing is not enough; we must do.",
+                "Imagine your life is perfect in every respect; what would it look like?",
+                "We generate fears while we sit. We overcome them by action.",
+                "Whether you think you can or think you can’t, you’re right.",
+                "Security is mostly a superstition. Life is either a daring adventure or nothing.",
+                "The man who has confidence in himself gains the confidence of others.",
+                "The only limit to our realization of tomorrow is our doubts of today.",
+                "Creativity is intelligence having fun.",
+                "What you lack in talent can be made up with desire and hustle.",
+                "Do what you feel in your heart to be right – for you’ll be criticized anyway.",
+                "Develop an ‘attitude of gratitude’. Say thank you to everyone you meet.",
+                "You are never too old to set another goal or to dream a new dream.",
+                "To see what is right and not do it is a lack of courage.",
+                "Reading is to the mind, as exercise is to the body.",
+                "Fake it until you make it! Act as if you had all the confidence.",
+                "Go confidently in the direction of your dreams. Live the life you have imagined.",
+                "Everything you’ve ever wanted is on the other side of fear."
+         ];
+         
+         const colors = {
+           slate: getComputedStyle(document.documentElement).getPropertyValue('--slate-gray'),
+           cool: getComputedStyle(document.documentElement).getPropertyValue('--cool-gray'),
+           royal: getComputedStyle(document.documentElement).getPropertyValue('--royal-blue'),
+           teal: getComputedStyle(document.documentElement).getPropertyValue('--teal'),
+           orange: getComputedStyle(document.documentElement).getPropertyValue('--dark-orange'),
+           gray: getComputedStyle(document.documentElement).getPropertyValue('--medium-gray')
+         };
+         
+         const params = new URLSearchParams(window.location.search);
+         const colorParam = params.get("color") || "teal";
+         const intervalParam = parseInt(params.get("interval")) || 600000;
+         
+         document.documentElement.style.setProperty('--text-color', colors[colorParam] || colors.royal);
+         
+         const quoteBox = document.getElementById("quoteBox");
+         
+         function showQuote() {
+           const quote = quotes[Math.floor(Math.random() * quotes.length)];
+           quoteBox.style.opacity = 0;
+           setTimeout(() => {
+             quoteBox.innerHTML = `“${quote}”`;
+             quoteBox.style.opacity = 1;
+             quoteBox.classList.remove("fade-in");
+             void quoteBox.offsetWidth;
+             quoteBox.classList.add("fade-in");
+           }, 250);
+         }
+         
+         // Initial quote
+         showQuote();
+         
+         // Auto update quote after interval
+         setInterval(showQuote, intervalParam);
+         
+         // Also change quote on any click
+         document.body.addEventListener("click", () => {
+           showQuote();
+         });
+      </script>
+   </body>
+</html>
