@@ -1,3 +1,5 @@
+<!-- URL?color1=royal&color2=orange&color3=teal&color4=slate -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +37,10 @@
       width: 100%;
       height: 100%;
       max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       color: var(--primary);
     }
@@ -52,6 +58,8 @@
       grid-template-columns: repeat(7, 1fr);
       gap: 0.2rem;
       font-family: 'Nunito', sans-serif;
+      width: 100%;
+      max-width: 300px;
     }
 
     .day-name {
@@ -88,10 +96,19 @@
 
   <script>
     const params = new URLSearchParams(location.search);
-    const color1 = params.get("color1") || "#4169E1";
-    const color2 = params.get("color2") || "#FF8C00";
-    const color3 = params.get("color3") || "#008080";
-    const color4 = params.get("color4") || "#6B7280";
+    const colors = {
+      slate: "#6B7280",
+      cool: "#4B5563",
+      royal: "#4169E1",
+      teal: "#008080",
+      orange: "#FF8C00",
+      gray: "#7C7C7C"
+    };
+
+    const color1 = colors[params.get("color1")] || "#4169E1";
+    const color2 = colors[params.get("color2")] || "#FF8C00";
+    const color3 = colors[params.get("color3")] || "#008080";
+    const color4 = colors[params.get("color4")] || "#6B7280";
 
     document.documentElement.style.setProperty('--primary', color1);
     document.documentElement.style.setProperty('--secondary', color2);
