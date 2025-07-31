@@ -101,6 +101,45 @@
     label {
       margin: 0 0.3rem;
     }
+
+    .input-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0.3rem 0;
+  gap: 0.3rem;
+}
+
+.input-group input {
+  flex-shrink: 0;
+}
+
+.toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.3rem 0;
+  cursor: pointer;
+}
+
+@media (max-width: 400px) {
+  body {
+    padding: 1rem;
+  }
+
+  .controls button {
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .timer {
+    font-size: clamp(2rem, 10vw, 4rem);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -115,14 +154,25 @@
     </div>
 
     <div class="inputs">
-      <label>Work: <input id="workInput" type="number" value="25" min="1"/></label>
-      <label>Break: <input id="breakInput" type="number" value="5" min="1"/></label>
-    </div>
+  <div class="input-group">
+    <label for="workInput">Work:</label>
+    <input id="workInput" type="number" value="25" min="1"/>
+  </div>
+  <div class="input-group">
+    <label for="breakInput">Break:</label>
+    <input id="breakInput" type="number" value="5" min="1"/>
+  </div>
+</div>
 
-    <div class="toggles">
-      <span onclick="toggleAuto()">Auto Mode: <b id="autoStatus">ON</b></span><br/>
-      <span onclick="toggleRepeat()">Repeat Mode: <b id="repeatStatus">OFF</b></span>
-    </div>
+<div class="toggles">
+  <div class="toggle-group" onclick="toggleAuto()">
+    <span>Auto Mode:</span> <b id="autoStatus">ON</b>
+  </div>
+  <div class="toggle-group" onclick="toggleRepeat()">
+    <span>Repeat Mode:</span> <b id="repeatStatus">OFF</b>
+  </div>
+</div>
+
   </div>
 
   <script>
