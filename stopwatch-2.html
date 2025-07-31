@@ -1,0 +1,145 @@
+<!-- URL?color1=teal&color2=orange -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stopwatch</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=Nunito:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --slate-gray: #6B7280;
+      --cool-gray: #4B5563;
+      --royal-blue: #4169E1;
+      --teal: #008080;
+      --dark-orange: #FF8C00;
+      --medium-gray: #7C7C7C;
+      --primary: #4169E1;
+      --secondary: #FF8C00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 3px;
+      padding: 1.2rem;
+      height: 98vh;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--slate-gray);
+      border-radius: 12px;
+      font-size: 0.92rem;
+    }
+
+    .container {
+      text-align: center;
+      color: var(--primary);
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .logo {
+      max-width: 48px;
+      margin-bottom: 0.8rem;
+    }
+
+    .timer {
+      font-size: clamp(2rem, 8vw, 4rem);
+      font-weight: bold;
+      margin-bottom: 1rem;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .controls button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.4rem 1rem;
+      margin: 0.2rem;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .controls button:hover {
+      background: var(--secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="icons/stopwatch.png" alt="Stopwatch Logo" class="logo"/>
+    <div class="timer" id="timer">00:00:00</div>
+
+    <div class="controls">
+      <button id="startPauseBtn" onclick="toggleStartPause()">Start</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const color1 = params.get("color1") || "teal";
+    const color2 = params.get("color2") || "orange";
+    const colors = {
+      slate: "#6B7280", cool: "#4B5563", royal: "#4169E1",
+      teal: "#008080", orange: "#FF8C00", gray: "#7C7C7C"
+    };
+    document.documentElement.style.setProperty("--primary", colors[color1] || color1);
+    document.documentElement.style.setProperty("--secondary", colors[color2] || color2);
+
+    const timerEl = document.getElementById("timer");
+    const startPauseBtn = document.getElementById("startPauseBtn");
+
+    let isRunning = false;
+    let startTime = 0;
+    let elapsed = 0;
+    let timerInterval;
+
+    function formatTime(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const seconds = String(totalSeconds % 60).padStart(2, '0');
+      const milliseconds = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
+      return `${minutes}:${seconds}:${milliseconds}`;
+    }
+
+    function updateDisplay() {
+      const now = performance.now();
+      const diff = now - startTime + elapsed;
+      timerEl.textContent = formatTime(diff);
+    }
+
+    function toggleStartPause() {
+      if (isRunning) {
+        clearInterval(timerInterval);
+        elapsed += performance.now() - startTime;
+        startPauseBtn.textContent = "Start";
+        isRunning = false;
+      } else {
+        startTime = performance.now();
+        timerInterval = setInterval(updateDisplay, 10);
+        startPauseBtn.textContent = "Pause";
+        isRunning = true;
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      elapsed = 0;
+      timerEl.textContent = "00:00:00";
+      startPauseBtn.textContent = "Start";
+    }
+  </script>
+</body>
+</html>
