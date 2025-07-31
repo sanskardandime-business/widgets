@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Greeting Widget</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Rajdhani:wght@500&family=Source+Sans+Pro:wght@400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color1: #4169E1;  /* Greeting default (royal) */
+      --color2: #4B5563;  /* Time/Date default (cool gray) */
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .greeting-box {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    #greeting {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      color: var(--color1);
+    }
+
+    #timeDisplay {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      margin-top: 0.3em;
+      color: var(--color2);
+    }
+
+    #dateDisplay {
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.8rem);
+      margin-top: 0.2em;
+      color: var(--color2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="greeting-box">
+    <div id="greeting">Loading...</div>
+    <div id="timeDisplay">--:-- --</div>
+    <div id="dateDisplay">-- -- ----</div>
+  </div>
+
+  <script>
+    // Safe theme colors you provided
+    const colorMap = {
+      slate: "#6B7280",
+      cool: "#4B5563",
+      royal: "#4169E1",
+      teal: "#008080",
+      orange: "#FF8C00",
+      gray: "#7C7C7C"
+    };
+
+    // Get color names from URL
+    const params = new URLSearchParams(window.location.search);
+    const color1Key = params.get("color1") || "royal";
+    const color2Key = params.get("color2") || "cool";
+
+    // Resolve to hex values
+    const color1 = colorMap[color1Key.toLowerCase()] || "#4169E1";
+    const color2 = colorMap[color2Key.toLowerCase()] || "#4B5563";
+
+    // Apply to CSS
+    document.documentElement.style.setProperty('--color1', color1);
+    document.documentElement.style.setProperty('--color2', color2);
+
+    const greetingEl = document.getElementById("greeting");
+    const timeDisplay = document.getElementById("timeDisplay");
+    const dateDisplay = document.getElementById("dateDisplay");
+
+    function updateTime() {
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      const ampm = hour >= 12 ? "PM" : "AM";
+      const hour12 = hour % 12 || 12;
+      const minStr = minute < 10 ? "0" + minute : minute;
+
+      timeDisplay.textContent = `${hour12}:${minStr} ${ampm}`;
+
+      let greeting = "Hello!";
+      if (hour >= 5 && hour < 12) {
+        greeting = "Good Morning";
+      } else if (hour >= 12 && hour < 17) {
+        greeting = "Good Afternoon";
+      } else if (hour >= 17 && hour < 21) {
+        greeting = "Good Evening";
+      } else {
+        greeting = "Good Night";
+      }
+
+      greetingEl.textContent = greeting;
+
+      // Format: Wednesday, 31 July 2025
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+                          "July", "August", "September", "October", "November", "December"];
+      const day = dayNames[now.getDay()];
+      const date = now.getDate();
+      const month = monthNames[now.getMonth()];
+      const year = now.getFullYear();
+
+      dateDisplay.textContent = `${day}, ${date} ${month} ${year}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>
