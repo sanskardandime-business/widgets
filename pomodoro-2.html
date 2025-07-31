@@ -1,0 +1,260 @@
+<!-- URL?color1=teal&color2=orange -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pomodoro Timer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --slate-gray: #6B7280;
+      --cool-gray: #4B5563;
+      --royal-blue: #4169E1;
+      --teal: #008080;
+      --dark-orange: #FF8C00;
+      --medium-gray: #7C7C7C;
+
+      --primary: #4169E1;
+      --secondary: #FF8C00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      height: 100vh;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+      border: 3px solid var(--secondary);
+      border-radius: 5px;
+    }
+
+    .container {
+      text-align: center;
+      color: var(--primary);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .logo {
+      max-width: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .mode {
+      font-size: clamp(1rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .timer {
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      font-weight: bold;
+      margin-bottom: 1.2rem;
+    }
+
+    .controls button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      margin: 0.3rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .controls button:hover {
+      background: var(--secondary);
+    }
+
+    .toggles,
+    .inputs {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .toggles span {
+      display: inline-block;
+      margin: 0.3rem;
+      cursor: pointer;
+    }
+
+    .inputs input {
+      width: 50px;
+      padding: 0.3rem;
+      text-align: center;
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      margin: 0.2rem;
+    }
+
+    label {
+      margin: 0 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="icons/pomodoro.png" alt="Pomodoro Logo" class="logo"/>
+    <div class="mode" id="mode">Focus</div>
+    <div class="timer" id="timer">25:00</div>
+
+    <div class="controls">
+      <button id="startPauseBtn" onclick="toggleStartPause()">Start</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+
+    <div class="inputs">
+      <label>Work: <input id="workInput" type="number" value="25" min="1"/></label>
+      <label>Break: <input id="breakInput" type="number" value="5" min="1"/></label>
+    </div>
+
+    <div class="toggles">
+      <span onclick="toggleAuto()">Auto Mode: <b id="autoStatus">OFF</b></span><br/>
+      <span onclick="toggleRepeat()">Repeat Mode: <b id="repeatStatus">OFF</b></span>
+    </div>
+  </div>
+
+  <script>
+    // Load colors from URL
+    const params = new URLSearchParams(location.search);
+    const color1 = params.get("color1") || "royal";
+    const color2 = params.get("color2") || "orange";
+    const colors = {
+      slate: "#6B7280", cool: "#4B5563", royal: "#4169E1",
+      teal: "#008080", orange: "#FF8C00", gray: "#7C7C7C"
+    };
+    document.documentElement.style.setProperty("--primary", colors[color1] || color1);
+    document.documentElement.style.setProperty("--secondary", colors[color2] || color2);
+
+    // Elements
+    const timerEl = document.getElementById("timer");
+    const modeEl = document.getElementById("mode");
+    const autoStatus = document.getElementById("autoStatus");
+    const repeatStatus = document.getElementById("repeatStatus");
+    const workInput = document.getElementById("workInput");
+    const breakInput = document.getElementById("breakInput");
+    const startPauseBtn = document.getElementById("startPauseBtn");
+
+    // State
+    let mode = "work";
+    let auto = false;
+    let repeat = false;
+    let isRunning = false;
+    let duration = 25 * 60;
+    let timerInterval;
+
+    // Utility
+    function getWorkDuration() {
+      return parseInt(workInput.value || "25") * 60;
+    }
+
+    function getBreakDuration() {
+      return parseInt(breakInput.value || "5") * 60;
+    }
+
+    function updateDisplay() {
+      const mins = String(Math.floor(duration / 60)).padStart(2, "0");
+      const secs = String(duration % 60).padStart(2, "0");
+      timerEl.textContent = `${mins}:${secs}`;
+    }
+
+    // Timer Logic
+    function toggleStartPause() {
+      if (isRunning) {
+        pauseTimer();
+      } else {
+        // Prevent starting at -1
+        if (duration <= 0) {
+          duration = mode === "work" ? getWorkDuration() : getBreakDuration();
+        }
+        startTimer();
+      }
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      isRunning = true;
+      startPauseBtn.textContent = "Pause";
+      timerInterval = setInterval(() => {
+        duration--;
+        updateDisplay();
+        if (duration <= 0) {
+  clearInterval(timerInterval);
+  isRunning = false;
+  startPauseBtn.textContent = "Start";
+
+  switchMode();
+
+  if (repeat) {
+    startTimer();
+  } else if (auto && mode === "break") {
+    startTimer();
+  }
+}
+
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      startPauseBtn.textContent = "Start";
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      startPauseBtn.textContent = "Start";
+      duration = mode === "work" ? getWorkDuration() : getBreakDuration();
+      updateDisplay();
+    }
+
+    function switchMode() {
+      mode = mode === "work" ? "break" : "work";
+      modeEl.textContent = mode === "work" ? "Focus" : "Break";
+      duration = mode === "work" ? getWorkDuration() : getBreakDuration();
+      updateDisplay();
+    }
+
+    function toggleAuto() {
+      auto = !auto;
+      autoStatus.textContent = auto ? "ON" : "OFF";
+    }
+
+    function toggleRepeat() {
+      repeat = !repeat;
+      repeatStatus.textContent = repeat ? "ON" : "OFF";
+    }
+
+    // Update time live on input change (when not running)
+    workInput.addEventListener("input", () => {
+      if (mode === "work" && !isRunning) {
+        duration = getWorkDuration();
+        updateDisplay();
+      }
+    });
+
+    breakInput.addEventListener("input", () => {
+      if (mode === "break" && !isRunning) {
+        duration = getBreakDuration();
+        updateDisplay();
+      }
+    });
+
+    // Initialize
+    duration = getWorkDuration();
+    updateDisplay();
+  </script>
+</body>
+</html>
