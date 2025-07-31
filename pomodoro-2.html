@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pomodoro Timer</title>
   <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=Nunito:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=Nunito:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
 
 <style>
   :root {
@@ -26,59 +26,58 @@
   }
 
   body {
-  margin: 0;
-  padding: 1.2rem;
-  height: 100vh;
-  background: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Inter', sans-serif;
-  border: 1px solid var(--slate-gray);
-  border-radius: 12px;
-  font-size: 0.92rem;
-}
+    margin: 0;
+    padding: 1.2rem;
+    height: 100vh;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid var(--slate-gray);
+    border-radius: 12px;
+    font-size: 0.92rem;
+  }
 
-.container {
-  text-align: center;
-  color: var(--primary);
-  width: 100%;
-  max-width: 340px; /* slightly smaller max width */
-}
+  .container {
+    text-align: center;
+    color: var(--primary);
+    width: 100%;
+    max-width: 340px;
+  }
 
-.logo {
-  max-width: 48px;
-  margin-bottom: 0.8rem;
-}
+  .logo {
+    max-width: 48px;
+    margin-bottom: 0.8rem;
+  }
 
-.mode {
-  font-size: clamp(0.9rem, 2.5vw, 1.4rem);
-  font-weight: 700;
-  color: var(--secondary);
-  margin-bottom: 0.4rem;
-  font-family: 'IBM Plex Sans', sans-serif;
-}
+  .mode {
+    font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 0.4rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
 
-.timer {
-  font-size: clamp(2rem, 8vw, 4rem);
-  font-weight: bold;
-  margin-bottom: 1rem;
-  font-family: 'Roboto', sans-serif;
-}
+  .timer {
+    font-size: clamp(2rem, 8vw, 4rem);
+    font-weight: bold;
+    margin-bottom: 1rem;
+    font-family: 'Roboto', sans-serif;
+  }
 
-.controls button {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 0.4rem 1rem;
-  margin: 0.2rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  font-family: 'Inter', sans-serif;
-}
-
+  .controls button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    margin: 0.2rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-family: 'Inter', sans-serif;
+  }
 
   .controls button:hover {
     background: var(--secondary);
@@ -148,6 +147,7 @@
     }
   }
 </style>
+
 
 </head>
 <body>
