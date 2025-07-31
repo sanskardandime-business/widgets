@@ -120,7 +120,7 @@
     </div>
 
     <div class="toggles">
-      <span onclick="toggleAuto()">Auto Mode: <b id="autoStatus">OFF</b></span><br/>
+      <span onclick="toggleAuto()">Auto Mode: <b id="autoStatus">ON</b></span><br/>
       <span onclick="toggleRepeat()">Repeat Mode: <b id="repeatStatus">OFF</b></span>
     </div>
   </div>
@@ -148,7 +148,7 @@
 
     // State
     let mode = "work";
-    let auto = false;
+    let auto = true;
     let repeat = false;
     let isRunning = false;
     let duration = 25 * 60;
@@ -255,6 +255,7 @@
     // Initialize
     duration = getWorkDuration();
     updateDisplay();
+    autoStatus.textContent = "ON";
   </script>
 </body>
 </html>
