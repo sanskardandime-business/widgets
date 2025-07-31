@@ -183,6 +183,8 @@
     }
 
     function startTimer() {
+      workInput.disabled = true;
+breakInput.disabled = true;
       clearInterval(timerInterval);
       isRunning = true;
       startPauseBtn.textContent = "Pause";
@@ -207,12 +209,16 @@
     }
 
     function pauseTimer() {
+      workInput.disabled = false;
+breakInput.disabled = false;
       clearInterval(timerInterval);
       isRunning = false;
       startPauseBtn.textContent = "Start";
     }
 
     function resetTimer() {
+      workInput.disabled = false;
+breakInput.disabled = false;
       clearInterval(timerInterval);
       isRunning = false;
       startPauseBtn.textContent = "Start";
@@ -228,14 +234,18 @@
     }
 
     function toggleAuto() {
-      auto = !auto;
-      autoStatus.textContent = auto ? "ON" : "OFF";
-    }
+  if (isRunning) return;
+  auto = !auto;
+  autoStatus.textContent = auto ? "ON" : "OFF";
+}
+
 
     function toggleRepeat() {
-      repeat = !repeat;
-      repeatStatus.textContent = repeat ? "ON" : "OFF";
-    }
+  if (isRunning) return;
+  repeat = !repeat;
+  repeatStatus.textContent = repeat ? "ON" : "OFF";
+}
+
 
     // Update time live on input change (when not running)
     workInput.addEventListener("input", () => {
